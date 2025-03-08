@@ -1,0 +1,4 @@
+spring:
+  datasource:
+    password: 0e3317d8a1cab15d70acf42c2af475c82ee56ed55713ec76403d3b503fabe63b
+

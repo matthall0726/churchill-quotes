@@ -1,0 +1,51 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.0'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id("com.google.cloud.tools.jib") version "3.4.0"
+}
+
+group = 'com.discordapi'
+version = '0.0.1-SNAPSHOT'
+jib.to.image='us.gcr.io/discord-api-406418/plant-bot'
+
+jib.container.creationTime='USE_CURRENT_TIMESTAMP'
+
+java {
+	sourceCompatibility = '17'
+	targetCompatibility = '17'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'com.discord4j:discord4j-core:3.2.6'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.projectlombok:lombok:1.18.28'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation group: 'net.dv8tion', name: 'JDA', version: '5.0.0-alpha.22'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.register('createDist', Zip) {
+	from bootJar
+	into('lib') {
+		from configurations.runtimeClasspath
+	}
+	archiveFileName = 'churchill_quotes_app.zip'
+}
+
+createDist.dependsOn build
+
+bootRun {
+	main = 'com.discordapi.SpringRunner'
+}
