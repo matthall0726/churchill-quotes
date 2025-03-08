@@ -44,6 +44,14 @@ tasks.register('createDist', Zip) {
 	archiveFileName = 'churchill_quotes_app.zip'
 }
 
+jar {
+	manifest {
+		attributes(
+				'Main-Class': 'com.discordapi.SpringRunner' // Replace with your main class
+		)
+	}
+}
+
 createDist.dependsOn build
 
 bootRun {
